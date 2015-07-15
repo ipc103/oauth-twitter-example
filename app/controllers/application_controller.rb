@@ -6,7 +6,7 @@ class ApplicationController < Sinatra::Base
   # rescue LoadError
   use Rack::Session::Cookie
     use OmniAuth::Builder do
-      provider :twitter, 'b8t1DOJ78u7ebHWMACbQXRBed', '1h76YnXJVBDVEZsTLdfKgPqXfphiPeNDZBVGWXxSSfGPo915o6'
+      provider :twitter, '', ''
     end
 
     get '/' do
@@ -17,9 +17,10 @@ class ApplicationController < Sinatra::Base
       HTML
     end
 
-    post '/auth/:name/callback' do
+    get '/auth/:name/callback' do
       auth = request.env['omniauth.auth']
-      binding.pry
       # do whatever you want with the information!
+      @user = User.find_or_create_by(uid: auth[:uid])
+      
     end
 end
